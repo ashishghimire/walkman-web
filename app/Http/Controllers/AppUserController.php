@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Services\AppUserService;
+//use Illuminate\Support\Facades\Hash;
 
 class AppUserController extends ApiController
 {
@@ -27,6 +27,7 @@ class AppUserController extends ApiController
 
 	public function store()
 	{
+		//dd(Hash::make('nice2meetu')); //This is to create a password so that i can insert to db directly
 		$apiToken = $this->appUser->save(request()->get('fb_info'));
 
 		if(!$apiToken) {

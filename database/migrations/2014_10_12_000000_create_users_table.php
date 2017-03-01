@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('role')->default('incentive_provider');
+            $table->string('role')->default('sponsor');
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
