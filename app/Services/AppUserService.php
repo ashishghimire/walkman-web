@@ -41,6 +41,10 @@ class AppUserService
 
 	public function verify($fbId, $apiToken)
 	{
+		if(!is_numeric($fbId)) {
+			return false;
+		}
+		
 		$user = $this->getByFbId($fbId);
 		
 		if(!$user) {
@@ -50,8 +54,28 @@ class AppUserService
 		return Hash::check($apiToken, $user->api_token);
 	}
 
-	public function update($data)
+	public function update($fbId, $data)
 	{
-		return $this->appUser->update($data);
+		return $this->appUser->update($fbId, $data);
 	}
+
+	public function topContributors()
+	{
+		return $this->transformCollection($this->appUser->topContributors()->all());
+	}
+
+	public function transformCollection($items)
+    {
+        return array_map([$this, 'transform'], $items);
+    }
+
+    public function transform($item)
+    {
+        return [
+                'name' => $item['fb_info']['name'],
+                'todays_distance' => $item['todays_distance'],
+                'total_distance' => $item['total_distance'],
+                'golds' => $item['golds'],
+            ];    
+    }
 }

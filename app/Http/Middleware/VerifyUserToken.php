@@ -24,21 +24,21 @@ class VerifyUserToken
      */
     public function handle($request, Closure $next)
     {
-        if(!($request->has('fb_id') && $request->has('api_token'))) {
-            return $this->failureResponse('make sure you have both fb_id and api_token');
+        if(!($request->header('fb_id') && $request->header('api_token'))) {
+            return $this->failureResponse('make sure you have fb_id and api_token in your header', 422);
         }
 
-        if(!$this->appUser->verify($request->get('fb_id'), $request->get('api_token'))) {
-            return $this->failureResponse('user not verified');
+        if(!$this->appUser->verify($request->header('fb_id'), $request->header('api_token'))) {
+            return $this->failureResponse('user not verified', 403);
         }
 
         return $next($request);
     }
 
-    protected function failureResponse($message)
+    protected function failureResponse($message, $statusCode)
     {
         return Response::json([
             'error' => $message
-        ], 422);
+        ], $statusCode);
     }
 }

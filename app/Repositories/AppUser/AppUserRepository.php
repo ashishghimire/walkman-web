@@ -32,9 +32,13 @@ class AppUserRepository implements AppUserRepositoryInterface
 		return $this->appUser->where('fb_id', $fbId)->firstOrFail();
 	}
 
-	public function update($data)
+	public function update($fbId, $data)
 	{
-		$user = $this->getByFbId($data['fb_id']);
+		try {
+			$user = $this->getByFbId($fbId);
+		} catch (\Exception $e) {
+			return false;
+		}
 		
 		if(!$user) {
 			return false;
@@ -50,5 +54,13 @@ class AppUserRepository implements AppUserRepositoryInterface
 		}
 
 		return false;
+	}
+
+	public function topContributors()
+	{
+		return $this->appUser
+		->orderBy('todays_distance', 'total_distance', 'desc')
+		->limit(config('constants.no_of_top_contributers'))
+		->get(['fb_info', 'todays_distance', 'total_distance', 'golds']);
 	}
 }

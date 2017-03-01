@@ -39,7 +39,6 @@ class AppUserController extends ApiController
 	public function index()
 	{
 		// dd(Hash::check('OwnNqEd55URsajytHah1SpRtGvEXHepq3eI5fNrOKqDZTrkWfcPT0aEqBiIU', '$2y$10$.ahzel3dK1ZtU1eh0Hk9Pus6zzmrGvpC541onwQXQaL5WS2Fef.yi'));
-		// dd('im here bitches');
 		// dd(AppUser::all());
 	}
 
@@ -49,11 +48,18 @@ class AppUserController extends ApiController
 			return $this->respondParameterFailed('you need todays_distance and golds to submit score');
 		}
 
-		if(!$this->appUser->update(request()->all())) {
+		if(!$this->appUser->update(request()->header('fb_id'), request()->all())) {
 			return $this->respondInternalError();
 		}
 
 		return $this->respondUpdated('User Successfully Updated');
+	}
+
+	public function leaderBoard()
+	{
+		return $this->respond([
+            'top_ten_contributors' =>$this->appUser->topContributors(),
+        ]);
 	}
 
 }
