@@ -58,7 +58,7 @@ class AppUserController extends ApiController
 	public function leaderBoard()
 	{
 		return $this->respond([
-            'top_ten_contributors' =>$this->appUser->topContributors(),
+            'top_contributors' =>$this->appUser->topContributors(),
         ]);
 	}
 
