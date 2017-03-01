@@ -2,25 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    
+    protected $user;
+
+    public function __construct(UserService $user)
+    {
+        $this->middleware('admin');
+        $this->user = $user;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-    /*use Illuminate\Support\Facades\Hash;
- 'password' => Hash::make($request->newPassword)
- if (Hash::check('plain-text', $hashedPassword)) {
-    // The passwords match...
-}*/
     public function index()
     {
-        //
+        $users = $this->user->getSponsors();
+        
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -61,9 +67,11 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $user = $this->user->find($id);
+
+        return view('user.edit', compact('user'));
     }
 
     /**

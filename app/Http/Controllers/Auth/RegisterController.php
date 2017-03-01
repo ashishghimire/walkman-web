@@ -27,7 +27,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -51,6 +51,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'photo' => 'image|mimes:jpeg,bmp,png'
         ]);
     }
 
@@ -62,10 +63,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $userData = [
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-        ]);
+        ];
+
+        if(!empty($data['photo'])) {
+            $fileName = $data['photo']->store('profile_pictures');
+            $userData['photo'] = $fileName;
+        }
+
+        return User::create($userData);
+    }
+
+    public function register()
+    {
+        $this->validator(request()->all())->validate();
+        $this->create(request()->all());
+
+        return redirect($this->redirectPath());
+    }
+
+    protected function redirectPath()
+    {
+        return route('user.index');
     }
 }
