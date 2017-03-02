@@ -52,7 +52,6 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -73,12 +72,6 @@
                                         {{ csrf_field() }}
                                     </form>
                                 </li>
-                                @if( Session::has('admin-logged-in') )
-                                    <li>
-                                        <a href="{{route('user.stop-masquerade')}}">Stop
-                                            Impersonating</a>
-                                    </li>
-                                @endif
                             </ul>
                         </li>
                     @endif
@@ -86,10 +79,18 @@
             </div>
         </div>
     </nav>
-
+    @if( Session::has('admin-logged-in') )
+        <div class="panel panel-default">
+            <div class="panel-body">You are currently impersonating {{auth()->user()->name}}... <a
+                        href="{{route('stop-masquerade')}}">Stop
+                    Impersonating</a></div>
+        </div>
+    @endif
+    @if(Session::has('message'))
+        <p class="alert alert-info">{{ Session::get('message') }}</p>
+    @endif
     @yield('content')
 </div>
-
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/script.js') }}"></script>
