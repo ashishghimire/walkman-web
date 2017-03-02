@@ -15,6 +15,23 @@
                         @endif
 
                         {!!Form::open(['route' => ['user.update-password', $user], 'method' => 'PATCH', 'class'=>'form-horizontal'])!!}
+
+                        @if(auth()->user()->role != 'admin')
+                            <div class="form-group{{ $errors->has('current_password') ? ' has-error' : '' }}">
+                                <label for="password" class="col-md-4 control-label">Current Password</label>
+
+                                <div class="col-md-6">
+                                    {!!Form::password('current_password', ['class' => 'form-control', 'id' => 'current-password', 'required'])!!}
+
+                                    @if ($errors->has('current_password'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('current_password') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">New Password</label>
 

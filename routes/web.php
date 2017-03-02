@@ -12,7 +12,11 @@
 */
 Route::auth();
 
-Route::get('/', 'HomeController@index');
+Route::get('home', function () {
+    return redirect('/');
+});
+
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('user', 'UserController', ['except' => ['create', 'store']]);
 

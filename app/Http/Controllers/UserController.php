@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
-use App\Http\Requests\PasswordRequest;
 use App\User;
+use Illuminate\Support\Facades\Validator;
+use Gate;
 
 /**
  * Class UserController
@@ -26,7 +27,8 @@ class UserController extends Controller
      */
     public function __construct(UserService $user)
     {
-        $this->middleware('admin');
+        $this->middleware('auth');
+        $this->middleware('admin', ['only' => ['index', 'edit', 'update']]);
         $this->user = $user;
     }
 
@@ -94,15 +96,15 @@ class UserController extends Controller
      *
      * @param UserRequest|Request $request
      * @param  \App\User $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UserRequest $request, User $user)
     {
-        if ($this->user->update($user, $request->all())) {
-            dd('updated');
+        if (!$this->user->update($user, $request->all())) {
+            return redirect()->back()->withErrors('There was a problem in updating user');
         }
 
-        dd('not updated');
+        return redirect()->route('user.index')->with('message', 'User Updated Successfully');
     }
 
     /**
@@ -113,20 +115,32 @@ class UserController extends Controller
     {
         $user = $this->user->find($id);
 
+        if (Gate::denies('changePassword', $user)) {
+            abort(403);
+        }
+
         return view('user.change-password', compact('user'));
     }
 
     /**
-     * @param PasswordRequest $request
      * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function updatePassword(PasswordRequest $request, User $user)
+    public function updatePassword(User $user)
     {
-        if ($this->user->changePassword($user, $request->all())) {
-            dd('updated');
+        if (Gate::denies('changePassword', $user)) {
+            abort(403);
+        }
+        
+        $this->validator(request()->all())->validate();
+
+        if (!$this->user->changePassword($user, request()->all())) {
+            return redirect()->back()->withErrors('Could not change password');
         }
 
-        dd('not updated');
+        $route = auth()->user()->role == 'admin' ? 'user.index' : 'home';
+
+        return redirect()->route($route)->with('message', 'Password Changed Successfully');
     }
 
     /**
@@ -138,5 +152,19 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    protected function validator(array $data)
+    {
+        if (auth()->user()->role == 'admin') {
+            return Validator::make($data, [
+                'password' => 'required|min:6|confirmed',
+            ]);
+        }
+
+        return Validator::make($data, [
+            'current_password' => 'required|old_password:' . request()->user->password,
+            'password' => 'required|min:6|confirmed',
+        ]);
     }
 }
