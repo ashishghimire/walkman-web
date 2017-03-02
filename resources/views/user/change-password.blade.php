@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Reset Password</div>
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    <div class="panel-body">
+                        @if (session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
 
                         {!!Form::open(['route' => ['user.update-password', $user], 'method' => 'PATCH', 'class'=>'form-horizontal'])!!}
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -20,7 +20,7 @@
 
                             <div class="col-md-6">
                                 {!!Form::password('password', ['class' => 'form-control', 'id' => 'password', 'required'])!!}
-                                
+
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -47,10 +47,10 @@
                                 {!!Form::submit('Submit', ['class' => 'btn btn-primary'])!!}
                             </div>
                         </div>
-                    {!!Form::close()!!}
+                        {!!Form::close()!!}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

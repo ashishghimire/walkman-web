@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Class RegisterController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterController extends Controller
 {
     /*
@@ -33,7 +37,6 @@ class RegisterController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -43,7 +46,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -59,7 +62,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)
@@ -69,7 +72,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ];
-        if(!empty($data['photo'])) {
+        if (!empty($data['photo'])) {
             $fileName = Storage::putFile('profile_pictures', $data['photo']);
             // $fileName = $data['photo']->store('profile_pictures');
             $userData['photo'] = $fileName;
@@ -78,6 +81,9 @@ class RegisterController extends Controller
         return User::create($userData);
     }
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function register()
     {
         $this->validator(request()->all())->validate();
@@ -86,6 +92,9 @@ class RegisterController extends Controller
         return redirect($this->redirectPath());
     }
 
+    /**
+     * @return string
+     */
     protected function redirectPath()
     {
         return route('user.index');

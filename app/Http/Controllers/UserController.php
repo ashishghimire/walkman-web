@@ -8,11 +8,22 @@ use App\Http\Requests\UserRequest;
 use App\Http\Requests\PasswordRequest;
 use App\User;
 
+/**
+ * Class UserController
+ * @package App\Http\Controllers
+ */
 class UserController extends Controller
 {
-    
+
+    /**
+     * @var UserService
+     */
     protected $user;
 
+    /**
+     * UserController constructor.
+     * @param UserService $user
+     */
     public function __construct(UserService $user)
     {
         $this->middleware('admin');
@@ -28,7 +39,7 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->user->getSponsors();
-        
+
         return view('user.index', compact('users'));
     }
 
@@ -45,7 +56,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -56,7 +67,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -67,8 +78,9 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
+     * @param $id
      * @return \Illuminate\Http\Response
+     * @internal param User $user
      */
     public function edit($id)
     {
@@ -80,19 +92,23 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param UserRequest|Request $request
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function update(UserRequest $request, User $user)
     {
-        if($this->user->update($user, $request->all())) {
+        if ($this->user->update($user, $request->all())) {
             dd('updated');
         }
 
         dd('not updated');
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function changePassword($id)
     {
         $user = $this->user->find($id);
@@ -100,9 +116,13 @@ class UserController extends Controller
         return view('user.change-password', compact('user'));
     }
 
+    /**
+     * @param PasswordRequest $request
+     * @param User $user
+     */
     public function updatePassword(PasswordRequest $request, User $user)
     {
-        if($this->user->changePassword($user, $request->all())) {
+        if ($this->user->changePassword($user, $request->all())) {
             dd('updated');
         }
 
@@ -112,7 +132,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
