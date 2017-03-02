@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use App\Http\Requests\PasswordRequest;
+use App\User;
 
 class UserController extends Controller
 {
@@ -81,9 +84,29 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        if($this->user->update($user, $request->all())) {
+            dd('updated');
+        }
+
+        dd('not updated');
+    }
+
+    public function changePassword($id)
+    {
+        $user = $this->user->find($id);
+
+        return view('user.change-password', compact('user'));
+    }
+
+    public function updatePassword(PasswordRequest $request, User $user)
+    {
+        if($this->user->changePassword($user, $request->all())) {
+            dd('updated');
+        }
+
+        dd('not updated');
     }
 
     /**

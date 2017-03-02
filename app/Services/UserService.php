@@ -28,4 +28,14 @@ class UserService
 
 		return $user;
 	}
+
+	public function update($user, $data)
+	{
+		return $this->user->update($user, $data);
+	}
+
+	public function changePassword($user, $data)
+	{
+		return $this->user->changePassword($user, $data);
+	}
 }

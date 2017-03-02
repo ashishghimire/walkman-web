@@ -8,7 +8,8 @@
    <li class="list-group-item">{{$user->name}}
    <a href="{{route('user.edit',$user->id)}}"><button type="button" class="btn btn-default">Edit</button></a>
    <button type="button" class="btn btn-info">Impersonate</button>
-   <button type="button" class="btn btn-danger">Delete</button>
+   <a href="{{route('user.change-password',$user->id)}}"><button type="button" class="btn btn-success">Change Password</button></a>
+      <button type="button" class="btn btn-danger">Delete</button>
    </li>
   @empty
   There are no sponsors yet

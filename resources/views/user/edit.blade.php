@@ -7,14 +7,14 @@
             	<div class="panel panel-default">
                 	<div class="panel-heading">Edit Sponsor</div>
                 	<div class="panel-body">
-						{!!Form::model($user, ['route' => ['user.update', $user->id], 'files'=> true])!!}
+						{!!Form::model($user, ['route' => ['user.update', $user], 'method' => 'PATCH', 'files'=> true, 'class'=>'form-horizontal'])!!}
 							
 
 							<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
 	                            <label for="name" class="col-md-4 control-label">Name</label>
 
 	                            <div class="col-md-6">
-	                                {!!Form::text('name', null, ['class'=>'form-control'])!!}
+	                                {!!Form::text('name', null, ['class'=>'form-control', 'required'])!!}
 
 	                                @if ($errors->has('name'))
 	                                    <span class="help-block">
@@ -28,7 +28,7 @@
 	                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
 	                            <div class="col-md-6">
-	                            	{!!Form::email('email', null, ['class'=>'form-control'])!!}
+	                            	{!!Form::email('email', null, ['class'=>'form-control', 'required'])!!}
 
 	                                @if ($errors->has('email'))
 	                                    <span class="help-block">
@@ -41,12 +41,16 @@
 	                        <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
 	                            <label for="photo" class="col-md-4 control-label">Photo</label>
 	                                <div class="col-md-6">
-	                                    {!!Form::file('photo',['class'=>'form-control', 'id'=>'photo', 'accept'=>'image/*'])!!}
 	                                    @if(!empty($user->photo))
-	                                    	<img src="{{storage_path('app/'.$user->photo)}}">
+											<div id="image-wrap">
+												<img src="{{url($user->photo)}}" height="300" width="400">
+												<div id="remove-image">X</div>
+											</div>
+	                                    @else
+	                                    	{!!Form::file('photo',['class'=>'form-control', 'id'=>'photo', 'accept'=>'image/*'])!!}
 	                                    @endif
 	                                    <!-- <input type="file" id = "photo" class="form-control" name="photo" value="{{ old('photo') }} " accept="image/*"> -->
-	                                        <div class="{{empty(old('photo'))? 'hidden' : ''}} remove">X</div>
+	                                    <div class="{{empty(old('photo'))? 'hidden' : ''}} remove">X</div>
 	                                    @if ($errors->has('photo'))
 	                                        <span class="help-block">
 	                                        <strong>{{ $errors->first('photo') }}</strong>

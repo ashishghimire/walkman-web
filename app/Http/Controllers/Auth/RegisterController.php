@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -68,9 +69,9 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ];
-
         if(!empty($data['photo'])) {
-            $fileName = $data['photo']->store('profile_pictures');
+            $fileName = Storage::putFile('profile_pictures', $data['photo']);
+            // $fileName = $data['photo']->store('profile_pictures');
             $userData['photo'] = $fileName;
         }
 
