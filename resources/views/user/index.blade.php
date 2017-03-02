@@ -9,7 +9,10 @@
                     <a href="{{route('user.edit',$user->id)}}">
                         <button type="button" class="btn btn-default">Edit</button>
                     </a>
-                    <button type="button" class="btn btn-info">Impersonate</button>
+
+                    <a href="{{route('user.masquerade',$user->id)}}">
+                        <button type="button" class="btn btn-info">Impersonate</button>
+                    </a>
                     <a href="{{route('user.change-password',$user->id)}}">
                         <button type="button" class="btn btn-success">Change Password</button>
                     </a>

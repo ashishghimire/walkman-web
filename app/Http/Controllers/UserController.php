@@ -6,6 +6,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\User;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Gate;
 
@@ -28,7 +29,7 @@ class UserController extends Controller
     public function __construct(UserService $user)
     {
         $this->middleware('auth');
-        $this->middleware('admin', ['only' => ['index', 'edit', 'update']]);
+        $this->middleware('admin', ['only' => ['index', 'edit', 'update', 'masquerade']]);
         $this->user = $user;
     }
 
@@ -131,7 +132,7 @@ class UserController extends Controller
         if (Gate::denies('changePassword', $user)) {
             abort(403);
         }
-        
+
         $this->validator(request()->all())->validate();
 
         if (!$this->user->changePassword($user, request()->all())) {
@@ -166,5 +167,21 @@ class UserController extends Controller
             'current_password' => 'required|old_password:' . request()->user->password,
             'password' => 'required|min:6|confirmed',
         ]);
+    }
+
+    public function masquerade($id)
+    {
+        $sponsor = $this->user->find($id);
+        Session::put('admin-logged-in', auth()->id());
+        auth()->login($sponsor);
+        return redirect()->route('home');
+    }
+
+    public function stopMasquerade()
+    {
+        $id = Session::pull('admin-logged-in');
+        $admin = $this->user->find($id);
+        auth()->login($admin);
+        return redirect()->route('home');
     }
 }

@@ -73,6 +73,12 @@
                                         {{ csrf_field() }}
                                     </form>
                                 </li>
+                                @if( Session::has('admin-logged-in') )
+                                    <li>
+                                        <a href="{{route('user.stop-masquerade')}}">Stop
+                                            Impersonating</a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
@@ -80,11 +86,7 @@
             </div>
         </div>
     </nav>
-    @if(session()->has('message'))
-        <div class="alert alert-success">
-            {{ session()->get('message') }}
-        </div>
-    @endif
+
     @yield('content')
 </div>
 

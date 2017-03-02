@@ -18,7 +18,7 @@ Route::get('home', function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::resource('user', 'UserController', ['except' => ['create', 'store']]);
+Route::resource('user', 'UserController', ['except' => ['create', 'store', 'show']]);
 
 Route::get('user/{user}/change-password', 'UserController@changePassword')->name('user.change-password');
 
@@ -29,3 +29,7 @@ Route::get('profile_pictures/{image}', function ($image) {
     $returnImage = Image::make($image);
     return $returnImage->response();
 });
+
+Route::get('user/{user}/masquerade', 'UserController@masquerade')->name('user.masquerade');
+
+Route::get('user/switch-back', 'UserController@stopMasquerade')->name('user.stop-masquerade');
