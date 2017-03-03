@@ -39,4 +39,12 @@ class User extends Authenticatable
     {
         return $this->role == 'admin';
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function incentives()
+    {
+        return $this->hasMany(Incentive::class);
+    }
 }

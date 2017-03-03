@@ -70,12 +70,19 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User $user
+     * @param $id
      * @return \Illuminate\Http\Response
+     * @internal param User $user
      */
     public function show($id)
     {
-        //
+        $user = $this->user->find($id);
+
+        if (Gate::denies('view', $user)) {
+            return redirect()->route('home')->with('message', 'You are not allowed to view this page');
+        }
+        return view('user.show', compact('user'));
+
     }
 
     /**
@@ -117,7 +124,7 @@ class UserController extends Controller
         $user = $this->user->find($id);
 
         if (Gate::denies('changePassword', $user)) {
-            abort(403);
+            return redirect()->route('home')->with('message', 'You are not allowed to perform this action');
         }
 
         return view('user.change-password', compact('user'));
@@ -155,6 +162,11 @@ class UserController extends Controller
         //
     }
 
+    /**
+     * Validate password
+     * @param array $data
+     * @return mixed
+     */
     protected function validator(array $data)
     {
         if (auth()->user()->role == 'admin') {
@@ -169,6 +181,11 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Impersonate user
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function masquerade($id)
     {
         $sponsor = $this->user->find($id);
@@ -177,6 +194,10 @@ class UserController extends Controller
         return redirect()->route('home');
     }
 
+    /**
+     * Switch back
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function stopMasquerade()
     {
         $id = Session::pull('admin-logged-in');
