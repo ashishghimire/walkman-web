@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
-use App\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Gate;
@@ -70,11 +69,13 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param User $user
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
+        $user = $this->user->find($id);
+
         if (Gate::denies('view', $user)) {
             return redirect()->route('home')->with('message', 'You are not allowed to view this page');
         }
@@ -100,11 +101,13 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param UserRequest|Request $request
-     * @param  \App\User $user
+     * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserRequest $request, $id)
     {
+        $user = $this->user->find($id);
+
         if (!$this->user->update($user, $request->all())) {
             return redirect()->back()->withErrors('There was a problem in updating user');
         }
@@ -113,6 +116,8 @@ class UserController extends Controller
     }
 
     /**
+     * Change password form
+     *
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -128,11 +133,15 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $user
+     * Update password
+     *
+     * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updatePassword(User $user)
+    public function updatePassword($id)
     {
+        $user = $this->user->find($id);
+
         if (Gate::denies('changePassword', $user)) {
             abort(403);
         }
@@ -151,16 +160,17 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User $user
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
         //
     }
 
     /**
      * Validate password
+     *
      * @param array $data
      * @return mixed
      */
@@ -188,11 +198,12 @@ class UserController extends Controller
         $sponsor = $this->user->find($id);
         Session::put('admin-logged-in', auth()->id());
         auth()->login($sponsor);
+
         return redirect()->route('home');
     }
 
     /**
-     * Switch back
+     * Switch back to admin
      * @return \Illuminate\Http\RedirectResponse
      */
     public function stopMasquerade()
@@ -200,6 +211,7 @@ class UserController extends Controller
         $id = Session::pull('admin-logged-in');
         $admin = $this->user->find($id);
         auth()->login($admin);
+
         return redirect()->route('home');
     }
 }

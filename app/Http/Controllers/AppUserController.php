@@ -48,8 +48,8 @@ class AppUserController extends ApiController
      */
     public function submitScore()
     {
-        if (!(request()->has('todays_distance') && request()->has('golds'))) {
-            return $this->respondParameterFailed('you need todays_distance and golds to submit score');
+        if (!(request()->has('todays_distance_walking') && request()->has('todays_distance_cycling') && request()->has('golds'))) {
+            return $this->respondParameterFailed('invalid parameters');
         }
 
         if (!$this->appUser->update(request()->header('fb_id'), request()->all())) {
@@ -66,7 +66,8 @@ class AppUserController extends ApiController
     public function leaderBoard()
     {
         return $this->respond([
-            'top_contributors' => $this->appUser->topContributors(),
+            'top_contributors_walking' => $this->appUser->topWalkers(),
+            'top_contributors_cycling' => $this->appUser->topBikers(),
         ]);
     }
 }

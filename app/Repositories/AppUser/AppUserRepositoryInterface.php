@@ -3,10 +3,38 @@
 namespace App\Repositories\AppUser;
 
 
+/**
+ * Interface AppUserRepositoryInterface
+ * @package App\Repositories\AppUser
+ */
 interface AppUserRepositoryInterface
 {
-	public function save($input);
-	public function getByFbId($fbId);
-	public function update($fbId, $data);
-	public function topContributors();
+    /**
+     * Save
+     * @param $input
+     * @return mixed
+     */
+    public function save($input);
+
+    /**
+     * get app users using fb id
+     * @param $fbId
+     * @return mixed
+     */
+    public function getByFbId($fbId);
+
+    /**
+     * Update
+     * @param $fbId
+     * @param $data
+     * @return mixed
+     */
+    public function update($fbId, $data);
+
+    /**
+     * get top contributors
+     * @param $type
+     * @return mixed
+     */
+    public function topContributors($type);
 }

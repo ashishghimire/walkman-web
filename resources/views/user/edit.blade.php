@@ -7,7 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Edit Sponsor</div>
                     <div class="panel-body">
-                        {!!Form::model($user, ['route' => ['user.update', $user], 'method' => 'PATCH', 'files'=> true, 'class'=>'form-horizontal'])!!}
+                        {!!Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'PATCH', 'files'=> true, 'class'=>'form-horizontal'])!!}
 
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

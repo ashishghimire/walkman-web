@@ -5,7 +5,7 @@
         <h3>Sponsors</h3>
         <ul class="list-group">
             @forelse($users as $user)
-                <li class="list-group-item"><a href="{{route('user.show', $user)}}">{{$user->name}}</a>
+                <li class="list-group-item"><a href="{{route('user.show', $user->id)}}">{{$user->name}}</a>
                     <a href="{{route('user.edit',$user->id)}}">
                         <button type="button" class="btn btn-default">Edit</button>
                     </a>

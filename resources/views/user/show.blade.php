@@ -14,7 +14,7 @@
             @endforelse
         </ul>
         @if(auth()->user()->isAdmin())
-            <a href="{{route('user.incentive.create',$user)}}">
+            <a href="{{route('user.incentive.create',$user->id)}}">
                 <button type="button" class="btn btn-default">Add New Incentive</button>
             </a>
         @endif

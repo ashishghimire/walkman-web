@@ -92,9 +92,17 @@ class AppUserService
     /**
      * @return array
      */
-    public function topContributors()
+    public function topWalkers()
     {
-        return $this->transformCollection($this->appUser->topContributors()->all());
+        return $this->transformCollection($this->appUser->topContributors('walking')->all());
+    }
+
+    /**
+     * @return array
+     */
+    public function topBikers()
+    {
+        return $this->transformCollection($this->appUser->topContributors('cycling')->all());
     }
 
     /**

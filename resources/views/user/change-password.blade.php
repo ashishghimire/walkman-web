@@ -14,7 +14,7 @@
                             </div>
                         @endif
 
-                        {!!Form::open(['route' => ['user.update-password', $user], 'method' => 'PATCH', 'class'=>'form-horizontal'])!!}
+                        {!!Form::open(['route' => ['user.update-password', $user->id], 'method' => 'PATCH', 'class'=>'form-horizontal'])!!}
 
                         @if(auth()->user()->role != 'admin')
                             <div class="form-group{{ $errors->has('current_password') ? ' has-error' : '' }}">
