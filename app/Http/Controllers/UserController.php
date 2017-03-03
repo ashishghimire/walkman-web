@@ -70,14 +70,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $id
+     * @param User $user
      * @return \Illuminate\Http\Response
-     * @internal param User $user
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $user = $this->user->find($id);
-
         if (Gate::denies('view', $user)) {
             return redirect()->route('home')->with('message', 'You are not allowed to view this page');
         }

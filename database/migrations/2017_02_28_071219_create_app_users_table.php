@@ -17,10 +17,10 @@ class CreateAppUsersTable extends Migration
             $table->increments('id');
             $table->bigInteger('fb_id')->unique();
             $table->json('fb_info');
-            $table->integer('golds')->default(0);
-            $table->integer('total_distance')->default(0);
-            $table->integer('todays_distance')->default(0);
-            $table->integer('personal_best')->default(0);
+            $table->integer('golds')->unsigned()->default(0);
+            $table->integer('total_distance')->unsigned()->default(0);
+            $table->integer('todays_distance')->unsigned()->default(0);
+            $table->integer('personal_best')->unsigned()->default(0);
             $table->string('api_token');
             $table->boolean('active')->default(true);
             $table->timestamps();

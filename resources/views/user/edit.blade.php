@@ -49,7 +49,6 @@
                                 @else
                                     {!!Form::file('photo',['class'=>'form-control', 'id'=>'photo', 'accept'=>'image/*'])!!}
                                 @endif
-                            <!-- <input type="file" id = "photo" class="form-control" name="photo" value="{{ old('photo') }} " accept="image/*"> -->
                                 <div class="{{empty(old('photo'))? 'hidden' : ''}} remove">X</div>
                                 @if ($errors->has('photo'))
                                     <span class="help-block">

@@ -33,3 +33,5 @@ Route::get('profile_pictures/{image}', function ($image) {
 Route::get('user/{user}/masquerade', 'UserController@masquerade')->name('user.masquerade');
 
 Route::get('switch-back', 'UserController@stopMasquerade')->name('stop-masquerade');
+
+Route::resource('user.incentive', 'IncentiveController');

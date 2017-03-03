@@ -19,7 +19,8 @@ class CreateIncentivesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('day');
             $table->boolean('available')->default(true);
-            $table->integer('gold_value')->default(0);
+            $table->integer('gold_value')->unsigned()->default(0);
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
         Schema::table('incentives', function ($table) {
