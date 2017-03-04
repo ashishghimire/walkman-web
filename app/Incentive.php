@@ -14,7 +14,14 @@ class Incentive extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'sponsor_id', 'day', 'available', 'gold_value'
+        'description', 'user_id', 'day', 'available', 'gold_value'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'available' => 'boolean'
     ];
 
     /**

@@ -79,6 +79,7 @@ class UserController extends Controller
         if (Gate::denies('view', $user)) {
             return redirect()->route('home')->with('message', 'You are not allowed to view this page');
         }
+
         return view('user.show', compact('user'));
 
     }
@@ -143,10 +144,10 @@ class UserController extends Controller
         $user = $this->user->find($id);
 
         if (Gate::denies('changePassword', $user)) {
-            abort(403);
+            return redirect()->route('home')->with('message', 'You are not authorised for this action');
         }
 
-        $this->validator(request()->all())->validate();
+        $this->passwordValidator(request()->all())->validate();
 
         if (!$this->user->changePassword($user, request()->all())) {
             return redirect()->back()->withErrors('Could not change password');
@@ -174,7 +175,7 @@ class UserController extends Controller
      * @param array $data
      * @return mixed
      */
-    protected function validator(array $data)
+    protected function passwordValidator(array $data)
     {
         if (auth()->user()->role == 'admin') {
             return Validator::make($data, [
@@ -199,7 +200,7 @@ class UserController extends Controller
         Session::put('admin-logged-in', auth()->id());
         auth()->login($sponsor);
 
-        return redirect()->route('home');
+        return redirect()->back();
     }
 
     /**
@@ -212,6 +213,6 @@ class UserController extends Controller
         $admin = $this->user->find($id);
         auth()->login($admin);
 
-        return redirect()->route('home');
+        return redirect()->back();
     }
 }

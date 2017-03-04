@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IncentiveRequest;
+use App\Services\IncentiveService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -11,15 +13,21 @@ class IncentiveController extends Controller
      * @var UserService
      */
     protected $user;
+    /**
+     * @var IncentiveService
+     */
+    protected $incentive;
 
     /**
      * IncentiveController constructor.
      * @param UserService $user
+     * @param IncentiveService $incentive
      */
-    public function __construct(UserService $user)
+    public function __construct(UserService $user, IncentiveService $incentive)
     {
         $this->user = $user;
         $this->middleware('admin');
+        $this->incentive = $incentive;
     }
 
     /**
@@ -48,12 +56,16 @@ class IncentiveController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param IncentiveRequest|Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(IncentiveRequest $request, $userId)
     {
-        //
+        $user = $this->user->find($userId);
+
+        if($this->incentive->save($userId, $request->all())) {
+            return redirect()->route('user.index')->with('message', "Incentive successfully added for sponsor {$user->name}");
+        }
     }
 
     /**
