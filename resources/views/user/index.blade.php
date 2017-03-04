@@ -20,11 +20,16 @@
                     <a href="{{route('user.change-password',$user->id)}}">
                         <button type="button" class="btn btn-success">Change Password</button>
                     </a>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    {!! Form::open(['route'=>['user.destroy', $user->id], 'method' => 'DELETE',  'onsubmit' => 'return confirmDelete()']) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
                 </li>
             @empty
                 There are no sponsors yet
             @endforelse
         </ul>
+        <a href="{{route('register')}}">
+            <button type="button" class="btn btn-default">Add new sponsor</button>
+        </a>
     </div>
 @endsection

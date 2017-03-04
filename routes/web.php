@@ -30,6 +30,12 @@ Route::get('profile_pictures/{image}', function ($image) {
     return $returnImage->response();
 });
 
+Route::get('incentive_pictures/{image}', function ($image) {
+    if (!File::exists($image = storage_path("app/incentive_pictures/{$image}"))) abort(404);
+    $returnImage = Image::make($image);
+    return $returnImage->response();
+});
+
 Route::get('user/{user}/masquerade', 'UserController@masquerade')->name('user.masquerade');
 
 Route::get('switch-back', 'UserController@stopMasquerade')->name('stop-masquerade');

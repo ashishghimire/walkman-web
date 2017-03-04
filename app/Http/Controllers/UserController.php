@@ -162,11 +162,15 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        if (!$this->user->delete($id)) {
+            return redirect()->back()->withErrors('There was a problem in deleting user');
+        }
+
+        return redirect()->route('user.index')->with('message', 'Sponsor successfully deleted');
     }
 
     /**

@@ -11,4 +11,8 @@ interface IncentiveRepositoryInterface
      * @return mixed
      */
     public function save($userId, $data);
+
+    public function find($id);
+
+    public function update($id, $data);
 }

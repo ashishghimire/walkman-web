@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+    <ol class="breadcrumb">
+        <li><a href="{{route('home')}}">Home</a></li>
+        @if(auth()->user()->isAdmin())
+            <li><a href="{{route('user.index')}}">Sponsors</a></li>
+        @endif
+        <li><a href="{{route('user.show', $user->id)}}">{{auth()->user()->isAdmin() ? $user->name : 'Profile'}}</a></li>
+        <li class="active">Change Password</li>
+    </ol>
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -16,7 +24,7 @@
 
                         {!!Form::open(['route' => ['user.update-password', $user->id], 'method' => 'PATCH', 'class'=>'form-horizontal'])!!}
 
-                        @if(auth()->user()->role != 'admin')
+                        @if(!auth()->user()->isAdmin())
                             <div class="form-group{{ $errors->has('current_password') ? ' has-error' : '' }}">
                                 <label for="password" class="col-md-4 control-label">Current Password</label>
 

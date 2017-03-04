@@ -66,4 +66,11 @@ class UserService
     {
         return $this->user->changePassword($user, $data);
     }
+
+    public function delete($id)
+    {
+        $user = $this->user->find($id);
+
+        return $user->delete();
+    }
 }

@@ -14,7 +14,7 @@ class Incentive extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'user_id', 'day', 'available', 'gold_value'
+        'description', 'user_id', 'day', 'available', 'gold_value', 'photo'
     ];
 
     /**

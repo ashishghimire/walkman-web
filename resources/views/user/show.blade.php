@@ -25,7 +25,12 @@
                     </a>
 
                     @if(auth()->user()->isAdmin())
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <a href="{{route('user.incentive.edit', [$user->id, $incentive->id])}}">
+                            <button type="button" class="btn btn-default">Edit</button>
+                        </a>
+                        {!! Form::open(['route'=>['user.incentive.destroy', $user->id, $incentive->id], 'method' => 'DELETE',  'onsubmit' => 'return confirmDelete()']) !!}
+                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::close() !!}
                     @endif
 
                 </li>
@@ -41,12 +46,11 @@
                             <div class="modal-body">
                                 <p>Distribution day: {{ucfirst($incentive->day)}}</p>
 
-                                {{--TODO: Add incentive photo--}}
-                                {{--@if(!empty($user->photo))--}}
-                                {{--<p>--}}
-                                {{--<img src="{{url($user->photo)}}" height="300" width="400">--}}
-                                {{--</p>--}}
-                                {{--@endif--}}
+                                @if(!empty($incentive->photo))
+                                    <p>
+                                        <img src="{{url($incentive->photo)}}" height="300" width="400">
+                                    </p>
+                                @endif
 
                             </div>
                             <div class="modal-footer">

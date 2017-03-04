@@ -57,13 +57,14 @@ class IncentiveController extends Controller
      * Store a newly created resource in storage.
      *
      * @param IncentiveRequest|Request $request
+     * @param $userId
      * @return \Illuminate\Http\Response
      */
     public function store(IncentiveRequest $request, $userId)
     {
         $user = $this->user->find($userId);
 
-        if($this->incentive->save($userId, $request->all())) {
+        if ($this->incentive->save($userId, $request->all())) {
             return redirect()->route('user.index')->with('message', "Incentive successfully added for sponsor {$user->name}");
         }
     }
@@ -82,34 +83,48 @@ class IncentiveController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param $userId
+     * @param $incentiveId
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($userId, $incentiveId)
     {
-        //
+        $user = $this->user->find($userId);
+        $incentive = $this->incentive->find($incentiveId);
+
+        return view('incentive.edit', compact('user', 'incentive'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param IncentiveRequest|Request $request
+     * @param $userId
+     * @param $incentiveId
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(IncentiveRequest $request, $userId, $incentiveId)
     {
-        //
+        if (!$this->incentive->update($incentiveId, $request->all())) {
+            return redirect()->back()->withErrors('There was a problem in updating user');
+        }
+
+        return redirect()->route('user.show', $userId)->with('message', 'Incentive successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param $userId
+     * @param $incentiveId
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($userId, $incentiveId)
     {
-        //
+        if (!$this->incentive->delete($incentiveId)) {
+            return redirect()->back()->withErrors('There was a problem in deleting incentive');
+        }
+
+        return redirect()->route('user.show', $userId)->with('message', 'Incentive successfully deleted');
     }
 }

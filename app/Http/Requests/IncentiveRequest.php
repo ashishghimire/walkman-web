@@ -23,11 +23,11 @@ class IncentiveRequest extends FormRequest
      */
     public function rules()
     {
-        $days = implode(array_keys(config('constants.days')), ', ');
+        $days = implode(array_keys(config('constants.days')), ',');
 
         return [
             'description' => 'required',
-            'day' => "required|in:{$days}",
+            'day' => "required|In:{$days}",
             'photo' => 'image|mimes:jpeg,bmp,png'
         ];
     }

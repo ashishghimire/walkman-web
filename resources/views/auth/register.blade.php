@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    <ol class="breadcrumb">
+        <li><a href="{{route('home')}}">Home</a></li>
+        <li><a href="{{route('user.index')}}">Sponsors</a></li>
+        <li class="active">Add New Sponsor</li>
+    </ol>
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -77,7 +82,6 @@
                                     @endif
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">

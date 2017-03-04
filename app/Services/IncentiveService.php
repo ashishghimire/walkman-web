@@ -26,4 +26,23 @@ class IncentiveService
     {
         return $this->incentive->save($userId, $data);
     }
+
+    public function find($id)
+    {
+        return $this->incentive->find($id);
+    }
+
+    public function update($incentiveId, $data)
+    {
+        $incentive = $this->incentive->find($incentiveId);
+
+        return $this->incentive->update($incentive, $data);
+    }
+
+    public function delete($incentiveId)
+    {
+        $incentive = $this->incentive->find($incentiveId);
+
+        return $incentive->delete();
+    }
 }
