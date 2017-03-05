@@ -10,7 +10,9 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Dashboard</div>
                     <div class="panel-body">
-                        You are logged in!
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="{{route('user.index')}}">View Sponsors</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>

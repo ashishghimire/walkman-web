@@ -21,6 +21,6 @@ class AppUser extends Model
      * @var array
      */
     protected $casts = [
-        'fb_info' => 'json'
+        'fb_info' => 'array'
     ];
 }

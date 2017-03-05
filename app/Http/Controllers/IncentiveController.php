@@ -58,15 +58,16 @@ class IncentiveController extends Controller
      *
      * @param IncentiveRequest|Request $request
      * @param $userId
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(IncentiveRequest $request, $userId)
     {
         $user = $this->user->find($userId);
 
-        if ($this->incentive->save($userId, $request->all())) {
-            return redirect()->route('user.index')->with('message', "Incentive successfully added for sponsor {$user->name}");
+        if (!$this->incentive->save($userId, $request->all())) {
+            return redirect()->back()->withErrors('There was a problem in updating incentive');
         }
+        return redirect()->route('user.show', $userId)->with('message', "Incentive successfully added for sponsor {$user->name}");
     }
 
     /**
@@ -106,7 +107,7 @@ class IncentiveController extends Controller
     public function update(IncentiveRequest $request, $userId, $incentiveId)
     {
         if (!$this->incentive->update($incentiveId, $request->all())) {
-            return redirect()->back()->withErrors('There was a problem in updating user');
+            return redirect()->back()->withErrors('There was a problem in updating incentive');
         }
 
         return redirect()->route('user.show', $userId)->with('message', 'Incentive successfully updated');

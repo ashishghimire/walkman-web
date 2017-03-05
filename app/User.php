@@ -47,4 +47,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Incentive::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function gifts()
+    {
+        return $this->hasManyThrough(Gift::class, Incentive::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailableGiftsAttribute()
+    {
+        return $this->gifts->where('resolved', false);
+    }
 }

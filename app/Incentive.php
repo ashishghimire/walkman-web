@@ -31,4 +31,12 @@ class Incentive extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function gifts()
+    {
+        return $this->hasMany(Gift::class);
+    }
 }
