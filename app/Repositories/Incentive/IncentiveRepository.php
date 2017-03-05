@@ -55,7 +55,7 @@ class IncentiveRepository implements IncentiveRepositoryInterface
 
         if (!empty($data['photo'])) {
 
-            $fileName = Storage::putFile('profile_pictures', $data['photo']);
+            $fileName = Storage::putFile('incentive_pictures', $data['photo']);
 
             if (!empty($incentive->photo)) {
                 if (File::exists(storage_path("app/{$incentive->photo}"))) {
