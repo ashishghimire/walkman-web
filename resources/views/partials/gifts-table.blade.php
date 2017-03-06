@@ -1,4 +1,4 @@
-<h2>Unresolved Gifts</h2>
+<h2>Unresolved Gifts ({{(count($user->availableGifts))}})</h2>
 <div class="table-responsive">
     <table class="table">
         <thead>

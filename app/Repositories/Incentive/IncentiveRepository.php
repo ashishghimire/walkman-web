@@ -3,7 +3,8 @@
 namespace App\Repositories\Incentive;
 
 use App\Incentive;
-use Illuminate\Support\Facades\Storage;
+use File;
+use Storage;
 
 class IncentiveRepository implements IncentiveRepositoryInterface
 {

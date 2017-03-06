@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Repositories\User;
-use Illuminate\Support\Facades\Storage;
-
+use Storage;
+use File;
 use App\User;
 
 class UserRepository implements UserRepositoryInterface
