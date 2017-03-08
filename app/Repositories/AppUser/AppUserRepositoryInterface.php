@@ -34,7 +34,8 @@ interface AppUserRepositoryInterface
     /**
      * get top contributors
      * @param $type
+     * @param int $limit
      * @return mixed
      */
-    public function topContributors($type);
+    public function topContributors($type, $limit = 10);
 }

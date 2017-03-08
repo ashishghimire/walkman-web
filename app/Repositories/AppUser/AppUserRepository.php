@@ -82,16 +82,17 @@ class AppUserRepository implements AppUserRepositoryInterface
 
     /**
      * @param $type
+     * @param int $limit
      * @return mixed
      */
-    public function topContributors($type)
+    public function topContributors($type, $limit = 10)
     {
         $totalDistance = "total_distance_{$type}";
         $todaysDistance = "todays_distance_{$type}";
 
         return $this->appUser
             ->orderBy($todaysDistance, $totalDistance, 'desc')
-            ->limit(config('constants.no_of_top_contributers'))
+            ->limit($limit)
             ->get(['fb_info', "{$todaysDistance} as todays_distance", "{$totalDistance} as total_distance", 'golds']);
 
     }

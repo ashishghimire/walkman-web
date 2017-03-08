@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AppUserService;
+use App\Services\IncentiveService;
 
 
 /**
@@ -15,15 +16,22 @@ class AppUserController extends ApiController
      * @var AppUserService
      */
     protected $appUser;
+    /**
+     * @var IncentiveService
+     */
+    protected $incentive;
 
     /**
      * AppUserController constructor.
      * @param AppUserService $appUserService
+     * @param IncentiveService $incentive
      */
-    public function __construct(AppUserService $appUserService)
+    public function __construct(AppUserService $appUserService, IncentiveService $incentive)
     {
         $this->appUser = $appUserService;
         $this->middleware('user.token')->except('store');
+        $this->middleware('api');
+        $this->incentive = $incentive;
     }
 
     /**
@@ -68,6 +76,16 @@ class AppUserController extends ApiController
         return $this->respond([
             'top_contributors_walking' => $this->appUser->topWalkers(),
             'top_contributors_cycling' => $this->appUser->topBikers(),
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodaysIncentives()
+    {
+        return $this->respond([
+            'todays_incentives' => $this->incentive->getTodaysIncentives(),
         ]);
     }
 }

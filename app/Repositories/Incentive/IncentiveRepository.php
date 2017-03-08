@@ -6,12 +6,20 @@ use App\Incentive;
 use File;
 use Storage;
 
+/**
+ * Class IncentiveRepository
+ * @package App\Repositories\Incentive
+ */
 class IncentiveRepository implements IncentiveRepositoryInterface
 {
     /**
      * @var Incentive
      */
     protected $incentive;
+    /**
+     * @var array
+     */
+    protected $days = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
 
     /**
      * IncentiveRepository constructor.
@@ -43,11 +51,20 @@ class IncentiveRepository implements IncentiveRepositoryInterface
         return false;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function find($id)
     {
         return $this->incentive->findOrFail($id);
     }
 
+    /**
+     * @param $incentive
+     * @param $data
+     * @return bool
+     */
     public function update($incentive, $data)
     {
         $incentive->description = $data['description'];
@@ -75,5 +92,19 @@ class IncentiveRepository implements IncentiveRepositoryInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTodaysIncentives()
+    {
+
+        $today = date('w');
+
+        return $this->incentive
+            ->where('day', $this->days[$today])
+            ->where('available', true)
+            ->with('sponsor')->get();
     }
 }

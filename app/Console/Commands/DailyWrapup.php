@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\GiftService;
 use Illuminate\Console\Command;
 
 class DailyWrapup extends Command
@@ -21,13 +22,19 @@ class DailyWrapup extends Command
     protected $description = 'Command description';
 
     /**
+     * @var GiftService
+     */
+    protected $gift;
+
+    /**
      * Create a new command instance.
      *
-     * @return void
+     * @param GiftService $gift
      */
-    public function __construct()
+    public function __construct(GiftService $gift)
     {
         parent::__construct();
+        $this->gift = $gift;
     }
 
     /**
@@ -39,6 +46,6 @@ class DailyWrapup extends Command
     {
         //distribute gifts
         //reset todays distances
-
+        $this->gift->distribute();
     }
 }
