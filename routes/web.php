@@ -41,3 +41,5 @@ Route::get('user/{user}/masquerade', 'UserController@masquerade')->name('user.ma
 Route::get('switch-back', 'UserController@stopMasquerade')->name('stop-masquerade');
 
 Route::resource('user.incentive', 'IncentiveController');
+
+Route::patch('gift/{gift}/resolve', 'UserController@resolveGift')->name('gift.resolve');

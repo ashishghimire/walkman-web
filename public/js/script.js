@@ -20,3 +20,7 @@ $("#remove-image").on('click', function () {
 function confirmDelete() {
     return confirm("Are you sure you want to delete?");
 }
+
+function confirmResolve() {
+    return confirm("Are you sure you want to resolve?");
+}

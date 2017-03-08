@@ -44,8 +44,10 @@ class DailyWrapup extends Command
      */
     public function handle()
     {
-        //distribute gifts
-        //reset todays distances
-        $this->gift->distribute();
+        if ($this->gift->distribute()) {
+            echo "success";
+        } else {
+            echo "failure";
+        }
     }
 }

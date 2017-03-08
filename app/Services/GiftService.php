@@ -33,20 +33,68 @@ class GiftService
      */
     public function __construct(GiftRepositoryInterface $gift, IncentiveRepositoryInterface $incentive, AppUserRepositoryInterface $appUser)
     {
-
         $this->gift = $gift;
         $this->incentive = $incentive;
         $this->appUser = $appUser;
     }
 
     /**
-     *
+     * @return bool
      */
     public function distribute()
     {
-        $todaysIncentives = $this->incentive->getTodaysIncentives();
-//        dd($todaysIncentivesCount);
-        $topWalkers = $this->appUser->topContributors('walking', count($todaysIncentives));
-        dd($topWalkers);
+        $todaysIncentives = $this->incentive->getTodaysIncentives()->pluck('id')->all();
+        $topContributors = $this->appUser->topContributors('walking', count($todaysIncentives))->pluck('id')->all();
+
+        if ((count($topContributors) < count($todaysIncentives)) || count($todaysIncentives) == 0) {
+            return false;
+        }
+
+        shuffle($todaysIncentives);
+        shuffle($topContributors);
+        $randomDistribution = array_combine($todaysIncentives, $topContributors);
+
+        foreach ($randomDistribution as $incentiveId => $contributorId) {
+            if (!$this->gift->create($this->createInputData($incentiveId, $contributorId))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $incentiveId
+     * @param $contributorId
+     * @return mixed
+     */
+    protected function createInputData($incentiveId, $contributorId)
+    {
+        $data['incentive_id'] = $incentiveId;
+        $data['app_user_id'] = $contributorId;
+        $data['expiry_date'] = date('Y-m-d', strtotime("+3 day"));
+        $data['voucher_code'] = rand(pow(10, 4), pow(10, 5) - 1); //5 digits random number
+
+        return $data;
+    }
+
+    /**
+     * @param $id
+     * @return bool|mixed
+     */
+    public function resolve($id)
+    {
+        $gift = $this->gift->find($id);
+
+        if (!$gift) {
+            return false;
+        }
+
+        return $this->gift->resolve($gift);
+    }
+
+    public function find($id)
+    {
+        return $this->gift->find($id);
     }
 }

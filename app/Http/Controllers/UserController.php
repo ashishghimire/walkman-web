@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GiftService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
@@ -20,16 +21,22 @@ class UserController extends Controller
      * @var UserService
      */
     protected $user;
+    /**
+     * @var GiftService
+     */
+    protected $gift;
 
     /**
      * UserController constructor.
      * @param UserService $user
+     * @param GiftService $gift
      */
-    public function __construct(UserService $user)
+    public function __construct(UserService $user, GiftService $gift)
     {
         $this->middleware('auth');
         $this->middleware('admin', ['only' => ['index', 'edit', 'update', 'masquerade']]);
         $this->user = $user;
+        $this->gift = $gift;
     }
 
     /**
@@ -214,9 +221,34 @@ class UserController extends Controller
     public function stopMasquerade()
     {
         $id = Session::pull('admin-logged-in');
-        $admin = $this->user->find($id);
-        auth()->login($admin);
+
+        try {
+            $admin = $this->user->find($id);
+            auth()->login($admin);
+        } catch (\Exception $e) {
+            return redirect('home');
+        }
 
         return redirect()->back();
+    }
+
+    /**
+     * Resolve gift
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function resolveGift($id)
+    {
+        $gift = $this->gift->find($id);
+
+        if (Gate::denies('resolve', $gift)) {
+            return redirect()->route('home')->with('message', 'You are not authorised for this action');
+        }
+
+        if ($this->gift->resolve($id)) {
+            return redirect()->back()->with('message', 'gift resolved');
+        }
+
+        return redirect()->back()->withErrors('Error occurred while resolving gift');
     }
 }

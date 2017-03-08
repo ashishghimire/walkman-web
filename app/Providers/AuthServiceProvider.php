@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Gift;
+use App\Policies\GiftPolicy;
 use App\Policies\UserPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
         User::class => UserPolicy::class,
+        Gift::class => GiftPolicy::class,
     ];
 
     /**

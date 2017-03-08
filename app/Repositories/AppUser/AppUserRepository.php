@@ -93,7 +93,7 @@ class AppUserRepository implements AppUserRepositoryInterface
         return $this->appUser
             ->orderBy($todaysDistance, $totalDistance, 'desc')
             ->limit($limit)
-            ->get(['fb_info', "{$todaysDistance} as todays_distance", "{$totalDistance} as total_distance", 'golds']);
+            ->get(['id', 'fb_info', "{$todaysDistance} as todays_distance", "{$totalDistance} as total_distance", 'golds']);
 
     }
 }

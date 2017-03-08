@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder
 //        User::truncate();
 
         $this->call(AppUsersTableSeeder::class);
-        $this->call(AdminSeeder::class);
+//        $this->call(AdminSeeder::class);
     }
 }

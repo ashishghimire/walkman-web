@@ -19,7 +19,9 @@
                 <td>{{$gift->incentive->description}}</td>
                 <td>{{$gift->voucher_code}}</td>
                 <td>
-                    <button type="button" class="btn btn-info">Resolve</button>
+                    {!!Form::open(['route' => ['gift.resolve', $gift->id], 'method' => 'PATCH', 'onsubmit' => 'return confirmResolve()'])!!}
+                    {!! Form::submit('Resolve', ['class' => 'btn btn-info']) !!}
+                    {!! Form::close() !!}
                 </td>
             </tr>
             <?php $i++?>
