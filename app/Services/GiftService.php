@@ -127,6 +127,7 @@ class GiftService
     public function transform($item)
     {
         return [
+            'gift_id' => $item['id'],
             'gift_description' => $item->incentive->description,
             'sponsor_name' => $item->incentive->sponsor->name,
             'voucher_code' => $item['voucher_code'],
