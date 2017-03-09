@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AppUserService;
+use App\Services\GiftService;
 use App\Services\IncentiveService;
 
 
@@ -20,18 +21,24 @@ class AppUserController extends ApiController
      * @var IncentiveService
      */
     protected $incentive;
+    /**
+     * @var GiftService
+     */
+    protected $gift;
 
     /**
      * AppUserController constructor.
      * @param AppUserService $appUserService
      * @param IncentiveService $incentive
+     * @param GiftService $gift
      */
-    public function __construct(AppUserService $appUserService, IncentiveService $incentive)
+    public function __construct(AppUserService $appUserService, IncentiveService $incentive, GiftService $gift)
     {
         $this->appUser = $appUserService;
         $this->middleware('user.token')->except('store');
         $this->middleware('api');
         $this->incentive = $incentive;
+        $this->gift = $gift;
     }
 
     /**
@@ -86,6 +93,18 @@ class AppUserController extends ApiController
     {
         return $this->respond([
             'todays_incentives' => $this->incentive->getTodaysIncentives(),
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function myGifts()
+    {
+        $appUserId = $this->appUser->getByFbId(request()->header('fb_id'))->id;
+
+        return $this->respond([
+            'my_gifts' => $this->gift->myGifts($appUserId),
         ]);
     }
 }

@@ -93,8 +93,45 @@ class GiftService
         return $this->gift->resolve($gift);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function find($id)
     {
         return $this->gift->find($id);
+    }
+
+    /**
+     * @param $appUserId
+     * @return array
+     */
+    public function myGifts($appUserId)
+    {
+        return $this->transformCollection($this->gift->findByAppUserId($appUserId)->all());
+    }
+
+    /**
+     * @param $items
+     * @return array
+     */
+    public function transformCollection($items)
+    {
+        return array_map([$this, 'transform'], $items);
+    }
+
+    /**
+     * @param $item
+     * @return array
+     */
+    public function transform($item)
+    {
+        return [
+            'gift_description' => $item->incentive->description,
+            'sponsor_name' => $item->incentive->sponsor->name,
+            'voucher_code' => $item['voucher_code'],
+            'gold_value' => $item->incentive->gold_value,
+            'expiry_date' => $item['expiry_date'],
+        ];
     }
 }

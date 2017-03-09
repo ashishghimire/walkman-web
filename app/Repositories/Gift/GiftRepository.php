@@ -66,4 +66,19 @@ class GiftRepository implements GiftRepositoryInterface
 
         return true;
     }
+
+    /**
+     * @param $appUserId
+     * @return mixed
+     */
+    public function findByAppUserId($appUserId)
+    {
+        try {
+            return $this->gift->where('app_user_id', $appUserId)
+                ->where('resolved', false)
+                ->get();
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 }

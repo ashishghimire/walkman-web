@@ -22,3 +22,4 @@ Route::post('app-user', 'AppUserController@store')->name('api.store');
 Route::patch('app-user', 'AppUserController@submitScore')->name('api.submit-score');
 Route::get('leaderboard', 'AppUserController@leaderBoard')->name('api.leaderboard');
 Route::get('todays-incentives', 'AppUserController@getTodaysIncentives')->name('api.todays-incentives');
+Route::get('my-gifts', 'AppUserController@myGifts')->name('api.my-gifts');

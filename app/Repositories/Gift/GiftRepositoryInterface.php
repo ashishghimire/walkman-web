@@ -26,4 +26,10 @@ interface GiftRepositoryInterface
      * @return mixed
      */
     public function find($id);
+
+    /**
+     * @param $appUserId
+     * @return mixed
+     */
+    public function findByAppUserId($appUserId);
 }

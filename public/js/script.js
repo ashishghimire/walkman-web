@@ -22,5 +22,5 @@ function confirmDelete() {
 }
 
 function confirmResolve() {
-    return confirm("Are you sure you want to resolve?");
+    return confirm("Are you sure you want to resolve this gift?");
 }
