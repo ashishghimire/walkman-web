@@ -105,6 +105,16 @@ class AppUserService
         return $this->transformCollection($this->appUser->topContributors('cycling')->all());
     }
 
+    public function fbFriendsTopWalkers($fbIdArray)
+    {
+        return $this->transformCollection($this->appUser->topContributors('walking', 10, $fbIdArray)->all());
+    }
+
+    public function fbFriendsTopBikers($fbIdArray)
+    {
+        return $this->transformCollection($this->appUser->topContributors('walking', 10, $fbIdArray)->all());
+    }
+
     /**
      * @param $items
      * @return array

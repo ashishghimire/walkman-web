@@ -19,7 +19,7 @@ class DailyWrapup extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Give gifts daily';
 
     /**
      * @var GiftService

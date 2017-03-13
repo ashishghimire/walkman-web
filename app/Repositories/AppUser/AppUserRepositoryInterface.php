@@ -35,7 +35,8 @@ interface AppUserRepositoryInterface
      * get top contributors
      * @param $type
      * @param int $limit
+     * @param array $whereIn
      * @return mixed
      */
-    public function topContributors($type, $limit = 10);
+    public function topContributors($type, $limit = 10, array $whereIn = []);
 }

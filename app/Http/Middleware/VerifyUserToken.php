@@ -6,10 +6,21 @@ use Closure;
 use Response;
 use App\Services\AppUserService;
 
+/**
+ * Class VerifyUserToken
+ * @package App\Http\Middleware
+ */
 class VerifyUserToken
 {
+    /**
+     * @var AppUserService
+     */
     protected $appUser;
-    
+
+    /**
+     * VerifyUserToken constructor.
+     * @param AppUserService $appUser
+     */
     public function __construct(AppUserService $appUser)
     {
         $this->appUser = $appUser;
@@ -35,6 +46,11 @@ class VerifyUserToken
         return $next($request);
     }
 
+    /**
+     * @param $message
+     * @param $statusCode
+     * @return mixed
+     */
     protected function failureResponse($message, $statusCode)
     {
         return Response::json([

@@ -89,6 +89,22 @@ class AppUserController extends ApiController
     /**
      * @return mixed
      */
+    public function socialLeaderBoard()
+    {
+        if(!request()->header('fb_friends')) {
+            return $this->respondParameterFailed('invalid parameters');
+        }
+        $fbIdArray = array_map('trim', explode(',', request()->header('fb_friends')));
+
+        return $this->respond([
+            'top_contributors_walking' => $this->appUser->fbFriendsTopWalkers($fbIdArray),
+            'top_contributors_cycling' => $this->appUser->fbFriendsTopBikers($fbIdArray),
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
     public function getTodaysIncentives()
     {
         return $this->respond([

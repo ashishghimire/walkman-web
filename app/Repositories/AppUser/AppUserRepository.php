@@ -83,17 +83,22 @@ class AppUserRepository implements AppUserRepositoryInterface
     /**
      * @param $type
      * @param int $limit
+     * @param array $whereIn
      * @return mixed
      */
-    public function topContributors($type, $limit = 10)
+    public function topContributors($type, $limit = 10, array $whereIn = [])
     {
         $totalDistance = "total_distance_{$type}";
         $todaysDistance = "todays_distance_{$type}";
 
-        return $this->appUser
+        $builder = $this->appUser;
+
+        if ($whereIn) {
+            $builder = $builder->whereIn('fb_id', $whereIn);
+        }
+        return $builder
             ->orderBy($todaysDistance, $totalDistance, 'desc')
             ->limit($limit)
             ->get(['id', 'fb_info', "{$todaysDistance} as todays_distance", "{$totalDistance} as total_distance", 'golds']);
-
     }
 }
