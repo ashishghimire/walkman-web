@@ -37,7 +37,7 @@ class AppUserService
         }
 
         $fbFields = json_decode($data);
-        $existingUser = $this->userExists($fbFields->id);
+        $existingUser = $this->getByFbId($fbFields->id);
 
         if ($existingUser) {
             return [
@@ -144,14 +144,5 @@ class AppUserService
             'total_distance' => $item['total_distance'],
             'golds' => $item['golds'],
         ];
-    }
-
-    protected function userExists($id)
-    {
-        return $this->getByFbId($id);
-
-//        if(!$user) {
-//            return false;
-//        }
     }
 }

@@ -27,7 +27,7 @@ class AppUserRepository implements AppUserRepositoryInterface
 
     /**
      * @param $input
-     * @return bool|string
+     * @return bool|array
      */
     public function save($input)
     {
