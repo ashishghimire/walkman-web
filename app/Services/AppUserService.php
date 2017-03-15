@@ -25,20 +25,21 @@ class AppUserService
     }
 
     /**
-     * @param $data
+     * @param $accessToken
      * @return array|bool
      */
-    public function save($data)
+    public function save($accessToken)
     {
-        $fbFields = json_decode($data);
-
-        if (empty($fbFields)) {
+        try {
+            $data = file_get_contents("https://graph.facebook.com/me?access_token={$accessToken}");
+        } catch (\Exception $e) {
             return false;
         }
 
+        $fbFields = json_decode($data);
         $existingUser = $this->userExists($fbFields->id);
 
-        if($existingUser) {
+        if ($existingUser) {
             return [
                 'message' => 'User Already Exists!!',
                 'api_token' => $existingUser->api_token

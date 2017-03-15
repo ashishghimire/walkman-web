@@ -47,7 +47,7 @@ class AppUserController extends ApiController
      */
     public function store()
     {
-        $response = $this->appUser->save(request()->get('fb_info'));
+        $response = $this->appUser->save(request()->get('fb_access_token'));
 
         if (!$response) {
             return $this->respondInternalError();
