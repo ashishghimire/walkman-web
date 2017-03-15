@@ -3,7 +3,6 @@
 namespace App\Repositories\AppUser;
 
 use App\AppUser;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * Class AppUserRepository
@@ -33,13 +32,18 @@ class AppUserRepository implements AppUserRepositoryInterface
     public function save($input)
     {
         $apiToken = str_random(60);
-        $input['api_token'] = Hash::make($apiToken);
+        $input['api_token'] = $apiToken;
 
-        if ($this->appUser->create($input)) {
-            return $apiToken;
+        try {
+            $this->appUser->create($input);
+        } catch (\Exception $e) {
+            return false;
         }
 
-        return false;
+        return [
+            'message' => 'User successfully created',
+            'api_token' => $apiToken
+        ];
     }
 
     /**

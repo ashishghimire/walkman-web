@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\AppUser\AppUserRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
-
 
 /**
  * Class AppUserService
@@ -28,7 +26,7 @@ class AppUserService
 
     /**
      * @param $data
-     * @return bool
+     * @return array|bool
      */
     public function save($data)
     {
@@ -36,6 +34,15 @@ class AppUserService
 
         if (empty($fbFields)) {
             return false;
+        }
+
+        $existingUser = $this->userExists($fbFields->id);
+
+        if($existingUser) {
+            return [
+                'message' => 'User Already Exists!!',
+                'api_token' => $existingUser->api_token
+            ];
         }
 
         $input = [];
@@ -76,7 +83,7 @@ class AppUserService
             return false;
         }
 
-        return Hash::check($apiToken, $user->api_token);
+        return $apiToken === $user->api_token;
     }
 
     /**
@@ -136,5 +143,14 @@ class AppUserService
             'total_distance' => $item['total_distance'],
             'golds' => $item['golds'],
         ];
+    }
+
+    protected function userExists($id)
+    {
+        return $this->getByFbId($id);
+
+//        if(!$user) {
+//            return false;
+//        }
     }
 }

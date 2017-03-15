@@ -47,13 +47,13 @@ class AppUserController extends ApiController
      */
     public function store()
     {
-        $apiToken = $this->appUser->save(request()->get('fb_info'));
+        $response = $this->appUser->save(request()->get('fb_info'));
 
-        if (!$apiToken) {
+        if (!$response) {
             return $this->respondInternalError();
         }
 
-        return $this->respondCreated('User Successfully Created', $apiToken);
+        return $this->respondCreated($response['message'], $response['api_token']);
     }
 
 
@@ -91,7 +91,7 @@ class AppUserController extends ApiController
      */
     public function socialLeaderBoard()
     {
-        if(!request()->header('fb_friends')) {
+        if (!request()->header('fb_friends')) {
             return $this->respondParameterFailed('invalid parameters');
         }
         $fbIdArray = array_map('trim', explode(',', request()->header('fb_friends')));
