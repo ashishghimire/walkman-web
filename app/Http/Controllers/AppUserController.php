@@ -35,8 +35,9 @@ class AppUserController extends ApiController
     public function __construct(AppUserService $appUserService, IncentiveService $incentive, GiftService $gift)
     {
         $this->appUser = $appUserService;
-        $this->middleware('user.token')->except('store');
         $this->middleware('api');
+        $this->middleware('app.secret');
+        $this->middleware('user.token')->except('store');
         $this->incentive = $incentive;
         $this->gift = $gift;
     }
@@ -53,7 +54,7 @@ class AppUserController extends ApiController
             return $this->respondInternalError();
         }
 
-        return $this->respondCreated($response['message'], $response['api_token']);
+        return $this->respondCreated($response['message'], $response['data']);
     }
 
 

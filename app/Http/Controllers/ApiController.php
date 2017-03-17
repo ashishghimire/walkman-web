@@ -99,14 +99,23 @@ class ApiController extends Controller
 
     /**
      * @param $message
-     * @param $apiToken
+     * @param $data
      * @return mixed
      */
-    public function respondCreated($message, $apiToken)
+    public function respondCreated($message, $data)
     {
         return $this->setStatusCode(IlluminateResponse::HTTP_CREATED)->respond([
             'message' => $message,
-            'api_token' => $apiToken,
+            'data' => $data,
         ]);
+    }
+
+    /**
+     * @param string $message
+     * @return mixed
+     */
+    public function respondNotVerified($message = 'Not Verified!')
+    {
+        return $this->setStatusCode(403)->respondWithError($message);
     }
 }

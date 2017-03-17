@@ -42,7 +42,10 @@ class AppUserService
         if ($existingUser) {
             return [
                 'message' => 'User Already Exists!!',
-                'api_token' => $existingUser->api_token
+                'data' => [
+                    'fb_info' => $existingUser->fb_info,
+                    'api_token' => $existingUser->api_token
+                ],
             ];
         }
 

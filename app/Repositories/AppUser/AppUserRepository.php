@@ -42,7 +42,10 @@ class AppUserRepository implements AppUserRepositoryInterface
 
         return [
             'message' => 'User successfully created',
-            'api_token' => $apiToken
+            'data' => [
+                'fb_info' => $input['fb_info'],
+                'api_token' => $apiToken
+            ]
         ];
     }
 
