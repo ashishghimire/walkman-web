@@ -12,10 +12,15 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
+        if(empty(env('ADMIN_NAME')) || empty(env('ADMIN_EMAIL')) || empty(env('ADMIN_PASSWORD'))) {
+            echo "ERROR!! Make sure ADMIN_NAME, ADMIN_EMAIL and ADMIN_PASSWORD in your .env file is not empty\n";
+            die();
+        }
+
         User::create([
-        	'name' => 'Ashish',
-        	'email' => 'ashishghimire02@gmail.com',
-        	'password'=> bcrypt('nice2meetu'),
+        	'name' => trim(env('ADMIN_NAME')),
+        	'email' => trim(env('ADMIN_EMAIL')),
+        	'password'=> bcrypt(trim(env('ADMIN_PASSWORD'))),
         	'role' => 'admin',
         ]);
     }
