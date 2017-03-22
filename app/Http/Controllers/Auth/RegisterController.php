@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Mail\SponsorCreated;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Storage;
@@ -87,7 +89,9 @@ class RegisterController extends Controller
     public function register()
     {
         $this->validator(request()->all())->validate();
-        $this->create(request()->all());
+        $user = $this->create(request()->all());
+        $user['unHashedPassword'] = request()->get('password');
+        Mail::to($user)->send(new SponsorCreated($user));
 
         return redirect($this->redirectPath());
     }
